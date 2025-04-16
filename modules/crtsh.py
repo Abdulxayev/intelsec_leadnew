@@ -1,18 +1,15 @@
-import requests
-import json
+import subprocess
 
 def get_subdomains(domain):
-    url = f"https://crt.sh/?q=%25.{domain}&output=json"
     try:
-        res = requests.get(url, timeout=10)
-        data = json.loads(res.text)
-        subdomains = set()
-        for cert in data:
-            name = cert.get("name_value", "")
-            if name and domain in name:
-                for line in name.split("\n"):
-                    if "*" not in line:
-                        subdomains.add(line.strip())
-        return sorted(subdomains)
+        result = subprocess.run(
+            ["subfinder", "-silent", "-d", domain],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=20
+        )
+        subs = result.stdout.strip().split("\n")
+        return list(filter(None, subs))[:20]  # limit to top 20
     except Exception as e:
-        return [f"[crt.sh error] {str(e)}"]
+        return [f"[subfinder error] {str(e)}"]
