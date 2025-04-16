@@ -1,0 +1,4 @@
+jobs:
+  - name: secintelbot
+    schedule: "0 8 * * *"
+    command: "python main.py"
