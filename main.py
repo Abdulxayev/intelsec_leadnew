@@ -10,6 +10,9 @@ chat_id = os.getenv("CHAT_ID")
 
 def build_report():
     subs = get_subdomains("beeline.uz")
+    subs = get_subdomains("opencard.uz")
+    subs = get_subdomains("att.com")
+    subs = get_subdomains("openbiznes.uz")
    # shodan_info = get_shodan_data("beeline.uz")
     cves = get_cves([])  # pass an empty list (no keyword filter)
     cve_block = "\n".join(cves[:10])
