@@ -1,19 +1,20 @@
 import os
 import shodan
 
-def get_shodan_data(query):
+def get_shodan_data(_):
     api_key = os.getenv("SHODAN_API", "")
     if not api_key:
-        return ["[Shodan] SHODAN_API not set"]
+        return ["[Shodan] Missing SHODAN_API key"]
 
     api = shodan.Shodan(api_key)
     try:
-        results = api.search('org:"UNITEL"', limit=3)
+        # Safe query that works on free tier
+        results = api.search("port:80 country:UZ", limit=3)
         data = []
-        for result in results['matches'][:3]:
-            ip = result['ip_str']
-            port = result.get('port', 'N/A')
-            org = result.get('org', '')
+        for result in results["matches"]:
+            ip = result.get("ip_str", "N/A")
+            port = result.get("port", "N/A")
+            org = result.get("org", "Unknown")
             data.append(f"{ip}:{port} – {org}")
         return data
     except Exception as e:
