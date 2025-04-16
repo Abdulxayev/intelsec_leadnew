@@ -11,12 +11,15 @@ chat_id = os.getenv("CHAT_ID")
 def build_report():
     subs = get_subdomains("beeline.uz")
    # shodan_info = get_shodan_data("beeline.uz")
-    cves = get_cves(["Huawei", "Oracle", "Jetty", "Beeline"])
+    cves = get_cves()
+    cve_block = "\n".join(cves[:10])
+
+
 
     report = f"🛡️ SecIntelBot Report\n📆 Date: Today\n\n"
     report += "1️⃣ Subdomains:\n" + "\n".join(subs[:5]) + "\n\n"
  #   report += "2️⃣ Shodan Exposures:\n" + "\n".join(shodan_info[:3]) + "\n\n"
-    report += "3️⃣ Relevant CVEs:\n" + "\n".join(cves[:3]) + "\n\n"
+    report += "3️⃣ Latest CVEs:\n```" + cve_block + "```\n\n"
     report += "✅ Auto-Posted by SecIntelBot"
 
     return report
