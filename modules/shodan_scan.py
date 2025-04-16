@@ -8,7 +8,7 @@ def get_shodan_data(query):
 
     api = shodan.Shodan(api_key)
     try:
-        results = api.search("port:80 country:UZ")
+        results = api.search('org:"UNITEL"', limit=3)
         data = []
         for result in results['matches'][:3]:
             ip = result['ip_str']
